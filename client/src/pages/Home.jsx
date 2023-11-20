@@ -1,15 +1,21 @@
 // client/src/pages/home/index.js
 
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = ({ username, setUsername, friend, setFriend, socket }) => {
   const navigate = useNavigate();
   const joinRoom = () => {
     if (friend !== "" && username !== "") {
+      handleReconnect();
       socket.emit("join", { username });
-      navigate("/chat", { replace: true });
+      navigate(`/chat/${friend}`);
     } else alert("Fill all fields");
   };
+  const handleReconnect = () => {
+    socket.connect();
+  };
+  // console.log("socket connected or not", socket);
   return (
     <div className={"container"}>
       <div className={"formContainer"}>

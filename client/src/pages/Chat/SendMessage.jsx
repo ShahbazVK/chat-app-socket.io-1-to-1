@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-const SendMessage = ({ socket, username, friend }) => {
+const SendMessage = ({ socket, friend }) => {
   const [message, setMessage] = useState("");
 
   const sendMessage = () => {
     if (message !== "") {
-      const createdTime = Date.now();
       socket.emit("private_message", {
         friend,
         message,

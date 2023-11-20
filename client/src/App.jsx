@@ -1,13 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import TheChat from "./pages/Chat";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [friend, setFriend] = useState("");
-  const socket = io.connect("http://localhost:3000");
+  const [socket, setsocket] = useState();
+  useEffect(() => {
+    let conn = io.connect("http://localhost:3000");
+    setsocket(conn);
+  }, []);
+
+  // console.log("socket");
   return (
     <Router>
       <div className="App">
@@ -25,7 +31,7 @@ const App = () => {
             }
           />
           <Route
-            path="/chat"
+            path="/chat/:friend"
             element={
               <TheChat username={username} friend={friend} socket={socket} />
             }
