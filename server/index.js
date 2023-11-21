@@ -24,6 +24,7 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => {
     // console.log(socket.handshake.auth.token);
     allUsers.push({ id: socket.id });
+    console.log(allUsers);
   });
   socket.on("private_message", (data) => {
     recipient = allUsers.find((user) => user.id === data.friend);
@@ -39,11 +40,10 @@ io.on("connection", (socket) => {
       ...data,
       createdTime: new Date().toLocaleTimeString(),
     });
-
-    socket.on("disconnect", () => {
-      console.log("disconnected", socket.id);
-      allUsers = allUsers.filter((user) => user.id !== socket.id);
-    });
+  });
+  socket.on("disconnect", () => {
+    console.log("disconnected", socket.id);
+    allUsers = allUsers.filter((user) => user.id !== socket.id);
   });
 });
 
