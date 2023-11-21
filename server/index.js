@@ -16,21 +16,20 @@ let allUsers = [];
 let recipient = {};
 
 io.use((socket, next) => {
-  socket.id = socket.id.slice(0, 5);
+  socket.id = socket.handshake.auth.token;
   next();
 });
 
 io.on("connection", (socket) => {
   socket.on("join", (data) => {
-    const { username } = data;
-    socket.username = username;
-    allUsers.push({ id: socket.id, username });
+    // console.log(socket.handshake.auth.token);
+    allUsers.push({ id: socket.id });
   });
   socket.on("private_message", (data) => {
-    recipient = allUsers.find((user) => user.username === data.friend);
+    recipient = allUsers.find((user) => user.id === data.friend);
     if (recipient) {
       io.to(recipient.id).emit("receive_message", {
-        sender: socket.username,
+        sender: socket.id,
         message: data.message,
         createdTime: new Date().toLocaleTimeString(),
       }); // Send to all users in friend, including sender

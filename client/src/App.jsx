@@ -9,9 +9,14 @@ const App = () => {
   const [friend, setFriend] = useState("");
   const [socket, setsocket] = useState();
   useEffect(() => {
-    let conn = io.connect("http://localhost:3000");
+    if (socket) {
+      socket.disconnect();
+    }
+    let conn = io.connect("http://localhost:3000", {
+      auth: { token: username },
+    });
     setsocket(conn);
-  }, []);
+  }, [username]);
 
   // console.log("socket");
   return (

@@ -7,7 +7,7 @@ const Home = ({ username, setUsername, friend, setFriend, socket }) => {
   const navigate = useNavigate();
   const joinRoom = () => {
     if (friend !== "" && username !== "") {
-      handleReconnect();
+      // handleReconnect();
       socket.emit("join", { username });
       navigate(`/chat/${friend}`);
     } else alert("Fill all fields");
