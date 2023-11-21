@@ -15,6 +15,11 @@ const io = new Server(server, {
 let allUsers = [];
 let recipient = {};
 
+io.use((socket, next) => {
+  socket.id = socket.id.slice(0, 5);
+  next();
+});
+
 io.on("connection", (socket) => {
   socket.on("join", (data) => {
     const { username } = data;
@@ -41,13 +46,6 @@ io.on("connection", (socket) => {
       allUsers = allUsers.filter((user) => user.id !== socket.id);
     });
   });
-
-  // socket.on("disconnect_user", () => {
-  //   console.log("object");
-  //   socket.disconnect();
-  //   // Optionally, update user list or perform other cleanup actions
-  //   allUsers = allUsers.filter((user) => user.id !== socket.id);
-  // });
 });
 
 server.listen(3000, () => console.log("Server is running on port 3000"));
